@@ -1,5 +1,6 @@
 import Entity from "./Entity.js";
 import Piece from "./pieces.js";
+import * as f from "./functions.js";
 
 // #region SETTINGS
 const trees_amount = 25;
@@ -103,7 +104,7 @@ function addBlankItems(size, type, col, row) {
   for (let i = 0; i < size; i++) {
     for (let j = 0; j < size; j++) {
       if (arrTrack[i][j] == 'mountain') {
-        j ++;
+        j++;
       } else if (arrTrack[i][j] == 0) {
         const dropSpace = new Entity(
           i + "drop" + j,
@@ -239,5 +240,16 @@ function finish() {
     }
   }
   console.log("num pieces: " + numPieces);
-  
+  let positions = f.getPositions(track);
+  console.log("fora del for: " + positions);
+  // var repetido = false; 
+  // for (var i = 0; i < array.length; i++) {
+  //     for (var k = 0; k < array.length; k++) {
+  //         if (array[i] == array[k] && i != k) { //revisamos que i sea diferente de j, para que no compare el mismo elemento exacto.
+  //             repetido= true;
+  //          }
+  //      }
+  //  }
+  //  console.log(repetido);
 }
+
