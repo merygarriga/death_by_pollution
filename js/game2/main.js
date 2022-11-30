@@ -119,12 +119,6 @@ function addBlankItems(size, type, col, row) {
   }
 }
 
-for (let i = 0; i < arrTrack.length; i++) {
-  for (let i2 = 0; i2 < arrTrack.length; i2++) {
-    console.log(arrTrack[i][i2])
-  }
-}
-
 //add pieces
 const piece = new Piece('piece');
 const piece2 = new Piece('piece');
@@ -134,6 +128,8 @@ piece.addPiece(0);
 piece2.addPiece(1);
 piece3.addPiece(2);
 let i = 3; //counter for the id of the pieces
+
+let numReload = 0;
 
 //button to change the 3 pieces
 document.getElementById("button").addEventListener("click", reloadPieces);
@@ -151,7 +147,8 @@ function reloadPieces() {
   new_pieces.forEach(el => {
     el.addEventListener('dragstart', dragStartHandler);
     el.addEventListener('dragend', dragEndHandler);
-  })
+  });
+  numReload++;
 }
 
 function loadPiece() {
@@ -235,21 +232,20 @@ function finish() {
   for (let i = 0; i < trackPieces.length; i++) {
     if (trackPieces[i].childElementCount !== 0) {
       track.push(trackPieces[i]);
-      console.log(track);
       numPieces++;
     }
   }
-  console.log("num pieces: " + numPieces);
-  let positions = f.getPositions(track);
-  console.log("fora del for: " + positions);
-  // var repetido = false; 
-  // for (var i = 0; i < array.length; i++) {
-  //     for (var k = 0; k < array.length; k++) {
-  //         if (array[i] == array[k] && i != k) { //revisamos que i sea diferente de j, para que no compare el mismo elemento exacto.
-  //             repetido= true;
-  //          }
-  //      }
-  //  }
-  //  console.log(repetido);
+  let positionsArr = f.getPositions(track);
+  let positions = f.comparePieces(positionsArr);
+  let trackImgs = document.querySelectorAll(".dropSpace img");
+  let trackCorrect = [];
+  for (let k = 0; k < positions.length; k++) {
+    if (k + 1 <= numPieces) {
+      trackCorrect.push(f.checkPiece(trackImgs[k].className, trackImgs[k + 1].className, positions[k]));
+    }
+  }
+  console.log(trackCorrect);
+
+
 }
 

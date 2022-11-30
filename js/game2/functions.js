@@ -3,30 +3,32 @@ export function checkPiece(piece1, piece2, position) {
     switch (piece1) {
         case 'img0':
             switch (position) {
-                case top:
+                case 'top':
                     if (piece2 == 'img0' || piece2 == 'img1' || piece2 == 'img2') {
                         isCorrect = true;
                     }
                     break;
-                case left:
+                case 'left':
                     break;
-                case bottom:
+                case 'bottom':
                     if (piece2 == 'img0' || piece2 == 'img4' || piece2 == 'img5') {
                         isCorrect = true;
                     }
                     break;
-                case right:
+                case 'right':
                     break;
 
                 default:
                     break;
             }
+            break;
+
         case 'img1':
             switch (position) {
-                case top:
-                case left:
+                case 'top':
+                case 'left':
                     break;
-                case bottom:
+                case 'bottom':
                     if (piece2 == 'img0' || piece2 == 'img4' || piece2 == 'img5') {
                         isCorrect = true;
                     }
@@ -41,39 +43,41 @@ export function checkPiece(piece1, piece2, position) {
                     break;
             }
             break;
+
         case 'img2':
             switch (position) {
-                case top:
+                case 'top':
                     break;
-                case left:
+                case 'left':
                     if (piece2 == 'img1' || piece2 == 'img3' || piece2 == 'img4') {
                         isCorrect = true;
                     }
                     break;
-                case bottom:
+                case 'bottom':
                     if (piece2 == 'img0' || piece2 == 'img4' || piece2 == 'img5') {
                         isCorrect = true;
                     }
                     break;
-                case right:
+                case 'right':
                     break;
 
                 default:
                     break;
             }
             break;
+
         case 'img3':
             switch (position) {
-                case top:
+                case 'top':
                     break;
-                case left:
+                case 'left':
                     if (piece2 == 'img1' || piece2 == 'img3' || piece2 == 'img4') {
                         isCorrect = true;
                     }
                     break;
-                case bottom:
+                case 'bottom':
                     break;
-                case right:
+                case 'right':
                     if (piece2 == 'img2' || piece2 == 'img3' || piece2 == 'img5') {
                         isCorrect = true;
                     }
@@ -83,17 +87,18 @@ export function checkPiece(piece1, piece2, position) {
                     break;
             }
             break;
+
         case 'img4':
             switch (position) {
-                case top:
+                case 'top':
                     if (piece2 == 'img0' || piece2 == 'img1' || piece2 == 'img2') {
                         isCorrect = true;
                     }
                     break;
-                case left:
-                case bottom:
+                case 'left':
+                case 'bottom':
                     break;
-                case right:
+                case 'right':
                     if (piece2 == 'img2' || piece2 == 'img3' || piece2 == 'img5') {
                         isCorrect = true;
                     }
@@ -103,20 +108,21 @@ export function checkPiece(piece1, piece2, position) {
                     break;
             }
             break;
+
         case 'img5':
             switch (position) {
-                case top:
+                case 'top':
                     if (piece2 == 'img0' || piece2 == 'img1' || piece2 == 'img2') {
                         isCorrect = true;
                     }
                     break;
-                case left:
+                case 'left':
                     if (piece2 == 'img1' || piece2 == 'img3' || piece2 == 'img4') {
                         isCorrect = true;
                     }
                     break;
-                case bottom:
-                case right:
+                case 'bottom':
+                case 'right':
                     break;
 
                 default:
@@ -127,14 +133,37 @@ export function checkPiece(piece1, piece2, position) {
         default:
             break;
     }
+    return isCorrect;
 }
 
 export function getPositions(track) {
-    let positions = [];
+    let positionArr = [];
     for (let j = 0; j < track.length; j++) {
         let elementId = track[j].id;
         let position = elementId.split('drop');
-        positions.push(position);
+        positionArr.push(position);
+    }
+    console.log(positionArr);
+    return positionArr;
+}
+
+export function comparePieces(array) {
+    let positions = [];
+    for (var i = 0; i < array.length; i++) {
+        if (i + 1 < array.length) {
+            if (parseInt(array[i][0]) + 1 === parseInt(array[i + 1][0]) && array[i][1] === array[i + 1][1]) { //revisamos que i sea diferente de j, para que no compare el mismo elemento exacto.
+                positions.push('bottom');
+            }
+            else if (parseInt(array[i][0]) - 1 === parseInt(array[i + 1][0]) && array[i][1] === array[i + 1][1]) { //revisamos que i sea diferente de j, para que no compare el mismo elemento exacto.
+                positions.push('left');
+            }
+            else if (parseInt(array[i + 1][1]) + 1 === parseInt(array[i + 1][1]) && array[i][0] === array[i + 1][0]) { //revisamos que i sea diferente de j, para que no compare el mismo elemento exacto.
+                positions.push('top');
+            }
+            else if (parseInt(array[i + 1][1]) - 1 === parseInt(array[i][1]) && array[i][0] === array[i + 1][0]) { //revisamos que i sea diferente de j, para que no compare el mismo elemento exacto.
+                positions.push('right');
+            }
+        }
     }
     return positions;
 }
