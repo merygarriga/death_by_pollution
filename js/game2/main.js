@@ -1,6 +1,7 @@
 import Entity from "./Entity.js";
 import Piece from "./pieces.js";
 import * as f from "./functions.js";
+import * as dragdrop from "./DragDropFunctions.js";
 
 // #region SETTINGS
 const trees_amount = 25;
@@ -127,7 +128,7 @@ const piece3 = new Piece('piece');
 piece.addPiece(0);
 piece2.addPiece(1);
 piece3.addPiece(2);
-let i = 3; //counter for the id of the pieces
+let i = 3; //count pieces
 
 let numReload = 0;
 
@@ -145,13 +146,13 @@ function reloadPieces() {
   });
   let new_pieces = document.querySelectorAll('#piece');
   new_pieces.forEach(el => {
-    el.addEventListener('dragstart', dragStartHandler);
-    el.addEventListener('dragend', dragEndHandler);
+    el.addEventListener('dragstart', dragdrop.dragStartHandler);
+    el.addEventListener('dragend', dragdrop.dragEndHandler);
   });
   numReload++;
 }
 
-function loadPiece() {
+export function loadPiece() {
   let pieceData = document.querySelectorAll('#piece');
 
   pieceData.forEach(el => {
@@ -164,8 +165,8 @@ function loadPiece() {
   });
   let new_pieces = document.querySelectorAll('#piece');
   new_pieces.forEach(el => {
-    el.addEventListener('dragstart', dragStartHandler);
-    el.addEventListener('dragend', dragEndHandler);
+    el.addEventListener('dragstart', dragdrop.dragStartHandler);
+    el.addEventListener('dragend', dragdrop.dragEndHandler);
   })
 }
 
@@ -174,78 +175,16 @@ const piecesElem = document.querySelectorAll('#piece');
 const dropSpaces = document.querySelectorAll('.dropSpace');
 
 piecesElem.forEach(el => {
-  el.addEventListener('dragstart', dragStartHandler);
-  el.addEventListener('dragend', dragEndHandler);
+  el.addEventListener('dragstart', dragdrop.dragStartHandler);
+  el.addEventListener('dragend', dragdrop.dragEndHandler);
 })
 
 dropSpaces.forEach(el => {
-  // el.addEventListener('dragenter', dragEnterHandler);
-  el.addEventListener('dragover', dragOverHandler);
-  el.addEventListener('dragleave', dragLeaveHandler);
-  el.addEventListener('drop', dropHandler);
+  // el.addEventListener('dragenter', dragdrop.dragEnterHandler);
+  el.addEventListener('dragover', dragdrop.dragOverHandler);
+  el.addEventListener('dragleave', dragdrop.dragLeaveHandler);
+  el.addEventListener('drop', dragdrop.dropHandler);
 })
 
-function dragStartHandler(e) {
-  e.dataTransfer.setData('data', e.target.id);
-  e.target.style = 'opacity: 0.3;';
-}
-
-function dragEndHandler(e) {
-  e.target.style = 'opacity: none;';
-  e.target.style = 'border: none';
-}
-
-// function dragEnterHandler(e) {
-// }
-
-function dragOverHandler(e) {
-  e.preventDefault();
-  e.target.style = 'border: 2px dashed gray; background: whitesmoke';
-}
-
-function dragLeaveHandler(e) {
-  e.target.style = 'border: none; background: rgb(228, 227, 227)';
-}
-
-function dropHandler(e) {
-  e.preventDefault();
-  dragLeaveHandler(e);
-  e.preventDefault();
-
-  let sourceElemData = e.dataTransfer.getData('data');
-  let sourceElemId = document.getElementById(sourceElemData);
-  this.appendChild(sourceElemId);
-  sourceElemId.style = 'opacity: none;';
-  sourceElemId.style = 'background-color: #dadada;';
-
-  loadPiece();
-}
-
 //check train track
-document.getElementById("button2").addEventListener("click", finish);
-
-function finish() {
-  let track = [];
-  let numPieces = 0;
-
-  let trackPieces = document.querySelectorAll(".dropSpace");
-  for (let i = 0; i < trackPieces.length; i++) {
-    if (trackPieces[i].childElementCount !== 0) {
-      track.push(trackPieces[i]);
-      numPieces++;
-    }
-  }
-  let positionsArr = f.getPositions(track);
-  let positions = f.comparePieces(positionsArr);
-  let trackImgs = document.querySelectorAll(".dropSpace img");
-  let trackCorrect = [];
-  for (let k = 0; k < positions.length; k++) {
-    if (k + 1 <= numPieces) {
-      trackCorrect.push(f.checkPiece(trackImgs[k].className, trackImgs[k + 1].className, positions[k]));
-    }
-  }
-  console.log(trackCorrect);
-
-
-}
-
+document.getElementById("button2").addEventListener("click", f.finish);
